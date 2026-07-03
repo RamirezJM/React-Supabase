@@ -1,5 +1,6 @@
 import supabase from "./supabase-client.js";
 import { useEffect, useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function Dashboard() {
   const [metrics, setMetrics] = useState([])
@@ -8,16 +9,7 @@ function Dashboard() {
   useEffect(() => {
     fetchMetrics();
   }, []);
-  /** 
-	Challenge: 
-* 1) Import the supabase client.
-* 2) Wrap the Supabase client code in a 'fetchMetrics' asynchronous function.
-* 3) Import useEffect and add this hook at the top of the Dashboard component. 
-* 4) Call the 'fetchMetrics' function as the effect in this hook and have it run
-		 only once after inital render.
-* 5) Log the response to the console and save (Cmd/Ctrl + s).
-     Hint: What makes useEffect only run on 1st render? Google is your friend.
-*/
+ 
 
   async function fetchMetrics() {
     try {
@@ -65,6 +57,28 @@ function Dashboard() {
     <div className="dashboard-wrapper">
       <div className="chart-container">
         <h2>Total Sales This Quarter ($)</h2>
+        <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={metrics}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
+          {/* Cuadrícula de fondo */}
+          <CartesianGrid strokeDasharray="3 3" />
+          
+          {/* Eje X mapea la propiedad que tiene el nombre */}
+          <XAxis dataKey="name" />
+          
+          {/* Eje Y calcula los números automáticamente */}
+          <YAxis />
+          
+          {/* Cartelito flotante al pasar el mouse */}
+          <Tooltip />
+          <Legend />
+          
+          {/* La barra física. 'dataKey' debe coincidir con la suma/monto de tu DB */}
+          <Bar dataKey="sum" fill="#58d675" name="Sellers" />
+        </BarChart>
+      </ResponsiveContainer>
       </div>
     </div>
   );
